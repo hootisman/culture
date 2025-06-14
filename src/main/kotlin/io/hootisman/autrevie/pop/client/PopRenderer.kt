@@ -1,6 +1,8 @@
 package io.hootisman.autrevie.pop.client
 
+import com.mojang.blaze3d.vertex.PoseStack
 import io.hootisman.autrevie.pop.Pop
+import net.minecraft.client.model.PlayerModel
 import net.minecraft.client.model.VillagerModel
 import net.minecraft.client.model.geom.ModelLayers
 import net.minecraft.client.renderer.entity.EntityRendererProvider
@@ -14,11 +16,12 @@ import net.neoforged.api.distmarker.OnlyIn
 
 @OnlyIn(Dist.CLIENT)
 class PopRenderer(pContext: EntityRendererProvider.Context) :
-    MobRenderer<Pop, VillagerModel<Pop>>(pContext, VillagerModel(pContext.bakeLayer(ModelLayers.VILLAGER)), 0.5F) {
-    private val TEMP_SKIN: ResourceLocation = ResourceLocation("textures/entity/villager/villager.png")
-    init {
-        this.addLayer(CustomHeadLayer(this, pContext.modelSet, pContext.itemInHandRenderer))
-        this.addLayer(CrossedArmsItemLayer(this, pContext.itemInHandRenderer))
+    MobRenderer<Pop, PlayerModel<Pop>>(pContext, PlayerModel(pContext.bakeLayer(ModelLayers.PLAYER_SLIM), true), 0.5F) {
+    private val TEMP_SKIN: ResourceLocation = ResourceLocation("textures/entity/player/slim/alex.png")
+
+    override fun scale(pLivingEntity: Pop, pPoseStack: PoseStack, pPartialTickTime: Float) {
+        val s = 0.9375f
+        pPoseStack.scale(s, s, s)
     }
 
     override fun getTextureLocation(pEntity: Pop): ResourceLocation {
